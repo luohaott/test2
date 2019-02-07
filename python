@@ -9,3 +9,5 @@ print('hello, world')
 
 
 chmod a+x pyTest1.py 
+
+各种编译器未有提供尾递归优化
