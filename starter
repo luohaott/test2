@@ -1,2 +1,67 @@
 编写自己的starter:
 spring boot中的starter概念是非常重要的机制，将一些配置和基础服务集成到starter，使用者只需要引入starter 依赖即可，spring boot 根据starter配置文件spring.factories自动扫描到要加载的信息​。
+
+
+1 什么starter
+官网：Starters are a set of convenient dependency descriptors that you can include in your application。The starter is really an empty jar. Its only purpose is to provide the necessary dependencies to work with the library。简单的说一个starter 集成了一些功能（比如pom依赖、提供一些基础的bean服务等），使用者只需要直接引入相应的starter 即可，不需要引入一些pom依赖以及一些配置文件等，极大地简化了使用。
+
+2 实践
+spring boot 怎么能知道这个starter 需要干些什么呢，所以需要引入spring.factories​文件，我们在工程的resource目录下新建META-INF目录，在里面新建一个配置文件spring.factories​，具体内容如下。
+
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.alibaba.rt.HelloAutoConfiguration
+
+import com.hsc.service.impl.HelloServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@EnableConfigurationProperties(HelloProperties.class)
+public class HelloAutoConfiguration {
+
+    @Autowired
+    private HelloProperties helloProperties;
+
+    @Bean
+    public HelloService helloService() {
+        HelloServiceImpl helloService = new HelloServiceImpl();
+        helloService.setName(helloProperties.getName());
+        return helloService;
+    }
+
+}
+
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+/**
+ * @author hsc
+ * 配置属性
+ */
+@ConfigurationProperties(prefix = HelloProperties.PREFIX)
+public class HelloProperties {
+    public final static String PREFIX = "spring.hello";
+
+    private String name;
+
+    private String version;
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+}
