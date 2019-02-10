@@ -1,0 +1,18 @@
+ActiveMQ中的消息重发时间间隔和重发次数
+我们可以来对ActiveMQ的重发策略（Redelivery Policy）来进行自定义配置，其中的配置参数主要有以下几个：
+ a） collisionAvoidanceFactor :碰撞躲避因数，默认值是0.15，这个参数是为了躲避高并发的重发带来的问题，我们查看org.apache.activemq.RedeliveryPolicy类的源代码，   
+ b)maximumRedeliveries ：最大重发次数，默认值是6，如果你想不限次数重发，可以设置成-1。同样是org.apache.activemq.RedeliveryPolicy类中的代码：
+ 
+c) maximumRedeliveryDelay ：重发最大拖延时间，默认为-1，表示没有最大拖延时间，此参数只有当useExponentialBackOff 为true时起效。同样是RedeliveryPolicy中的代码
+ 
+d) initialRedeliveryDelay ：第一次重发的拖延时间基础，默认是1000，单位为毫秒，前面讲collisionAvoidanceFactor 属性时已经提到过，这里不再多说。
+
+e）redeliveryDelay ：如果initialRedeliveryDelay 为0，则使用redeliveryDelay ，默认也是1000。RedeliveryPolicy中源代码如下：
+
+ protected long initialRedeliveryDelay = 1000L;
+    protected long redeliveryDelay = initialRedeliveryDelay;
+  f）useCollisionAvoidance ：消息重发时是否采用前面提到的碰撞避免collisionAvoidanceFactor 参数，默认是false，不采用。源代码上面也给出了，这里不再多说。
+  
+   g）useCollisionAvoidance ：是否使用成倍增加拖延，默认为false，如果我们希望重发的拖延时间一次比一次大很多，则可以设置它为true。上面已经给出过源代码，这里再次给出：
+   
+    h）backOffMultiplier ：成倍拖延时间的倍率，默认为5，上面已经提到了，这里不再多说。
