@@ -16,3 +16,7 @@ e）redeliveryDelay ：如果initialRedeliveryDelay 为0，则使用redeliveryDe
    g）useCollisionAvoidance ：是否使用成倍增加拖延，默认为false，如果我们希望重发的拖延时间一次比一次大很多，则可以设置它为true。上面已经给出过源代码，这里再次给出：
    
     h）backOffMultiplier ：成倍拖延时间的倍率，默认为5，上面已经提到了，这里不再多说。
+    
+   RocketMQ:
+    rocketmq原生版本的3V版本是默认支持事务消息和回查机制的,
+    rocketmq4.3支持事务消息才加入
