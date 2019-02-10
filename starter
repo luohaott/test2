@@ -1,0 +1,2 @@
+编写自己的starter:
+spring boot中的starter概念是非常重要的机制，将一些配置和基础服务集成到starter，使用者只需要引入starter 依赖即可，spring boot 根据starter配置文件spring.factories自动扫描到要加载的信息​。
